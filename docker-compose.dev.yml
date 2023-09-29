@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:alpine3.18
+    environment:
+      POSTGRES_USER: the_blogger
+      POSTGRES_PASSWORD: the_password
+      POSTGRES_DB: the_blog
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  debug-helper:
+    image: busybox
