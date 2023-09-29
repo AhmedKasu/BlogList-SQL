@@ -1,11 +1,8 @@
 import express from 'express'
-import { Sequelize } from 'sequelize'
-
-import { PORT, DATABASE_URL_DEV } from './src/utils/config.js'
+import { PORT } from './utils/config.js'
+import sequelize from './db.js'
 
 const app = express()
-
-const sequelize = new Sequelize(DATABASE_URL_DEV)
 
 const main = async () => {
   try {
