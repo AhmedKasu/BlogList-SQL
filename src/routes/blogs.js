@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import Blog from '../models/Blog.js'
+import { Blog } from '../models/index.js'
 
 import errorHandler from '../middleware/errorHandler.js'
 import findById from '../middleware/findById.js'
