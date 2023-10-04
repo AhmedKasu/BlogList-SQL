@@ -1,4 +1,4 @@
-import { blogSchema, blogIdSchema } from './schemas.js'
+import { blogSchema, blogIdSchema, likesUpdateSchema } from './schemas.js'
 import { ValidationError } from '../errors.js'
 
 const validateBlog = (blog) => {
@@ -17,4 +17,12 @@ const validateBlogId = (id) => {
   return data
 }
 
-export { blogSchema, validateBlog, validateBlogId }
+const validateLikes = (likesObj) => {
+  const { data, error } = likesUpdateSchema.safeParse(likesObj)
+
+  if (error) throw new ValidationError(error.formErrors.fieldErrors)
+
+  return data
+}
+
+export { blogSchema, validateBlog, validateBlogId, validateLikes }

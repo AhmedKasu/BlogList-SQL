@@ -3,7 +3,7 @@ import { Blog } from '../models/index.js'
 
 import errorHandler from '../middleware/errorHandler.js'
 import findById from '../middleware/findById.js'
-import { validateBlog } from '../utils/validation/blog.js'
+import { validateBlog, validateLikes } from '../utils/validation/blog.js'
 
 const router = Router()
 const singleRouter = Router()
@@ -21,6 +21,12 @@ router.post('/', async (req, res) => {
 singleRouter.delete('/', async (req, res) => {
   await Blog.destroy({ where: { id: req.blog.id } })
   res.sendStatus(204).end()
+})
+
+singleRouter.put('/', async (req, res) => {
+  req.blog.likes = validateLikes(req.body).likes
+  await req.blog.save()
+  res.status(200).json(req.blog)
 })
 
 router.use('/:id', findById(Blog, 'blog'), singleRouter, errorHandler)

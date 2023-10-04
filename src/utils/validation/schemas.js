@@ -12,4 +12,8 @@ const blogIdSchema = z.string().refine((value) => {
   return reg.test(value)
 })
 
-export { blogSchema, blogIdSchema }
+const likesUpdateSchema = z.object({
+  likes: z.number().int().min(1),
+})
+
+export { blogSchema, blogIdSchema, likesUpdateSchema }
