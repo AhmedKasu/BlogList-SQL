@@ -1,12 +1,5 @@
-import { z } from 'zod'
+import { blogSchema, blogIdSchema } from './schemas.js'
 import { ValidationError } from '../errors.js'
-
-const blogSchema = z.object({
-  author: z.string().max(50),
-  url: z.string().url().nonempty(),
-  title: z.string().max(50).nonempty(),
-  likes: z.number().int().default(0),
-})
 
 const validateBlog = (blog) => {
   const { data, error } = blogSchema.safeParse(blog)
@@ -15,11 +8,6 @@ const validateBlog = (blog) => {
 
   return data
 }
-
-const blogIdSchema = z.string().refine((value) => {
-  const reg = /^\d+$/
-  return reg.test(value)
-})
 
 const validateBlogId = (id) => {
   const { data, error } = blogIdSchema.safeParse(id)
