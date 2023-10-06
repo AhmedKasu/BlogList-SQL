@@ -2,7 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import User from '../models/User.js'
+import { User } from '../models/index.js'
 import validateLogin from '../utils/validation/login.js'
 import { JWT_SECRET } from '../utils/config.js'
 
