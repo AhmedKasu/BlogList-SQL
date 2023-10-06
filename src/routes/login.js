@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import User from '../models/User.js'
-import errorHandler from '../middleware/errorHandler.js'
 import validateLogin from '../utils/validation/login.js'
 import { JWT_SECRET } from '../utils/config.js'
 
@@ -33,5 +32,4 @@ router.post('/', async (req, res) => {
   res.status(200).send({ token, userName: user.userName, name: user.name })
 })
 
-router.use(errorHandler)
 export default router

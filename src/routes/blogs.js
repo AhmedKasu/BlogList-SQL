@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import { Blog } from '../models/index.js'
 
-import errorHandler from '../middleware/errorHandler.js'
 import findById from '../middleware/findById.js'
 import { validateBlog, validateLikes } from '../utils/validation/blog.js'
 
@@ -29,7 +28,6 @@ singleRouter.put('/', async (req, res) => {
   res.status(200).json(req.blog)
 })
 
-router.use('/:id', findById(Blog, 'blog'), singleRouter, errorHandler)
-router.use(errorHandler)
+router.use('/:id', findById(Blog, 'blog'), singleRouter)
 
 export default router

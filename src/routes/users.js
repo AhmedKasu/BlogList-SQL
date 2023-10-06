@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt'
 import _ from 'lodash'
 
 import { User } from '../models/index.js'
-import errorHandler from '../middleware/errorHandler.js'
 import findByUserName from '../middleware/findByUserName.js'
 import {
   validateUser,
@@ -38,5 +37,4 @@ router.put('/:userName', findByUserName, async (req, res) => {
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
 })
 
-router.use(errorHandler)
 export default router
