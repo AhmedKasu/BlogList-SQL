@@ -26,10 +26,16 @@ const userNameSchema = z.object({
   userName: userSchema.shape.userName,
 })
 
+const loginSchema = z.object({
+  userName: userSchema.shape.userName,
+  password: userSchema.shape.password,
+})
+
 export {
   blogSchema,
   blogIdSchema,
   likesUpdateSchema,
   userSchema,
   userNameSchema,
+  loginSchema,
 }
