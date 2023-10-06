@@ -1,12 +1,18 @@
 const errorHandler = (error, _req, res, _next) => {
+  console.log('adkhgdlahebd', error)
   const { name, message, details, status } = error
   switch (name) {
     case 'SequelizeDatabaseError':
     case 'SequelizeValidationError':
-    case 'SequelizeUniqueConstraintError':
       return res.status(400).json({
         error: name,
         details: message,
+      })
+
+    case 'SequelizeUniqueConstraintError':
+      return res.status(400).json({
+        error: name,
+        details: error.errors[0].message,
       })
 
     case 'ValidationError':
