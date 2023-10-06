@@ -1,7 +1,7 @@
 import { JWT_SECRET } from '../utils/config.js'
+import jwt from 'jsonwebtoken'
 
 const auth = async (req, res, next) => {
-  console.log('auuuuthhhhthhhtth')
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
