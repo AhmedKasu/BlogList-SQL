@@ -16,4 +16,20 @@ const likesUpdateSchema = z.object({
   likes: z.number().int().min(1),
 })
 
-export { blogSchema, blogIdSchema, likesUpdateSchema }
+const userSchema = z.object({
+  userName: z.string().min(3).max(30).nonempty(),
+  name: z.string().max(30).nonempty(),
+  password: z.string().min(5).max(30),
+})
+
+const userNameSchema = z.object({
+  userName: userSchema.shape.userName,
+})
+
+export {
+  blogSchema,
+  blogIdSchema,
+  likesUpdateSchema,
+  userSchema,
+  userNameSchema,
+}
