@@ -13,7 +13,10 @@ router.get('/', async (_req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const newBlog = await Blog.create(validateBlog(req.body))
+  const newBlog = await Blog.create({
+    ...validateBlog(req.body),
+    userId: req.authUser.id,
+  })
   res.status(200).json(newBlog)
 })
 
