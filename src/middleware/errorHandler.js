@@ -1,5 +1,4 @@
 const errorHandler = (error, _req, res, _next) => {
-  console.log('adkhgdlahebd', error)
   const { name, message, details, status } = error
   switch (name) {
     case 'SequelizeDatabaseError':
