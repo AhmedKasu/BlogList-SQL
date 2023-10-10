@@ -2,7 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
 
-import { User } from '../models/index.js'
+import { User, Blog } from '../models/index.js'
 import findByUserName from '../middleware/findByUserName.js'
 import {
   validateUser,
@@ -27,6 +27,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (_req, res) => {
   const users = await User.findAll({
     attributes: { exclude: ['password'] },
+    include: { model: Blog, attributes: { exclude: ['userId'] } },
   })
   res.status(200).json(users)
 })
