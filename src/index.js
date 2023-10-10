@@ -11,6 +11,7 @@ import errorHandler from './middleware/errorHandler.js'
 import blogsRouter from './routes/blogs.js'
 import usersRouter from './routes/users.js'
 import loginRouter from './routes/login.js'
+import authorsRouter from './routes/authors.js'
 
 app.use(express.json())
 
@@ -20,6 +21,7 @@ app.use(auth)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/authors', authorsRouter)
 
 app.use(errorHandler)
 
