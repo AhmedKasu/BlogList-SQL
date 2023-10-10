@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { Blog } from '../models/index.js'
+import { Blog, User } from '../models/index.js'
 
 import findById from '../middleware/findById.js'
 import { validateBlog, validateLikes } from '../utils/validation/blog.js'
@@ -8,7 +8,10 @@ const router = Router()
 const singleRouter = Router()
 
 router.get('/', async (_req, res) => {
-  const blogs = await Blog.findAll()
+  const blogs = await Blog.findAll({
+    attributes: { exclude: ['userId'] },
+    include: { model: User, attributes: ['userName'] },
+  })
   res.status(200).json(blogs)
 })
 
@@ -21,6 +24,8 @@ router.post('/', async (req, res) => {
 })
 
 singleRouter.delete('/', async (req, res) => {
+  if (req.blog.userId !== req.authUser.id) return res.status(401).end()
+
   await Blog.destroy({ where: { id: req.blog.id } })
   res.sendStatus(204).end()
 })
