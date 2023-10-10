@@ -10,18 +10,19 @@ const router = Router()
 const singleRouter = Router()
 
 router.get('/', async (req, res) => {
+  const searchQuery = req.query.search
   const where = {}
 
   if (req.query.search) {
     where[Op.or] = [
       {
         title: {
-          [Op.iLike]: `%${req.query.search}%`,
+          [Op.iLike]: `%${searchQuery}%`,
         },
       },
       {
         author: {
-          [Op.iLike]: `%${req.query.search}%`,
+          [Op.iLike]: `%${searchQuery}%`,
         },
       },
     ]
@@ -31,6 +32,7 @@ router.get('/', async (req, res) => {
     attributes: { exclude: ['userId'] },
     include: { model: User, attributes: ['userName'] },
     where,
+    order: [['likes', 'DESC']],
   })
   res.status(200).json(blogs)
 })
