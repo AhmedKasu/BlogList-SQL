@@ -16,11 +16,11 @@ import authorsRouter from './routes/authors.js'
 app.use(express.json())
 
 app.use('/api/login', loginRouter)
+app.use('/api/users', usersRouter)
 
 app.use(auth)
 
 app.use('/api/blogs', blogsRouter)
-app.use('/api/users', usersRouter)
 app.use('/api/authors', authorsRouter)
 
 app.use(errorHandler)
