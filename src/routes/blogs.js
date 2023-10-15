@@ -4,7 +4,12 @@ import { Op } from 'sequelize'
 import { Blog, User } from '../models/index.js'
 
 import findById from '../middleware/findById.js'
-import { validateBlog, validateLikes } from '../utils/validation/blog.js'
+import validateUserInput from '../utils/validation/index.js'
+import {
+  blogSchema,
+  likesUpdateSchema,
+  blogIdSchema,
+} from '../utils/validation/schemas.js'
 
 const router = Router()
 const singleRouter = Router()
@@ -39,7 +44,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const newBlog = await Blog.create({
-    ...validateBlog(req.body),
+    ...validateUserInput(blogSchema, req.body),
     userId: req.authUser.id,
   })
   res.status(200).json(newBlog)
@@ -53,11 +58,11 @@ singleRouter.delete('/', async (req, res) => {
 })
 
 singleRouter.put('/', async (req, res) => {
-  req.blog.likes = validateLikes(req.body).likes
+  req.blog.likes = validateUserInput(likesUpdateSchema, req.body).likes
   await req.blog.save()
   res.status(200).json(req.blog)
 })
 
-router.use('/:id', findById(Blog, 'blog'), singleRouter)
+router.use('/:id', findById(Blog, 'blog', blogIdSchema), singleRouter)
 
 export default router

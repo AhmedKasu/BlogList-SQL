@@ -3,13 +3,14 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../models/index.js'
-import validateLogin from '../utils/validation/login.js'
+import validateUserInput from '../utils/validation/index.js'
+import { loginSchema } from '../utils/validation/schemas.js'
 import { JWT_SECRET } from '../utils/config.js'
 
 const router = Router()
 
 router.post('/', async (req, res) => {
-  const { username, password } = validateLogin(req.body)
+  const { username, password } = validateUserInput(loginSchema, req.body)
 
   const user = await User.findOne({
     where: { username },
