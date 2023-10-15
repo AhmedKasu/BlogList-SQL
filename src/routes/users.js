@@ -32,8 +32,8 @@ router.get('/', async (_req, res) => {
   res.status(200).json(users)
 })
 
-router.put('/:userName', findByUserName, async (req, res) => {
-  req.user.userName = validateUserNameUpdate(req.body).userName
+router.put('/:username', findByUserName, async (req, res) => {
+  req.user.username = validateUserNameUpdate(req.body).username
   await req.user.save()
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
 })

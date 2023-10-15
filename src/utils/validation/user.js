@@ -1,4 +1,4 @@
-import { userSchema, userNameSchema } from './schemas.js'
+import { userSchema, usernameSchema } from './schemas.js'
 import { ValidationError } from '../errors.js'
 
 const validateUser = (user) => {
@@ -10,7 +10,7 @@ const validateUser = (user) => {
 }
 
 const validateUserNameUpdate = (userName) => {
-  const { data, error } = userNameSchema.safeParse(userName)
+  const { data, error } = usernameSchema.safeParse(userName)
 
   if (error) throw new ValidationError(error.formErrors.fieldErrors)
 

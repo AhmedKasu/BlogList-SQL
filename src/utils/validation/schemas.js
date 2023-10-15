@@ -17,17 +17,17 @@ const likesUpdateSchema = z.object({
 })
 
 const userSchema = z.object({
-  userName: z.string().min(3).max(30).nonempty(),
+  username: z.string().min(3).max(30).nonempty(),
   name: z.string().max(30).nonempty(),
   password: z.string().min(5).max(30),
 })
 
-const userNameSchema = z.object({
-  userName: userSchema.shape.userName,
+const usernameSchema = z.object({
+  username: userSchema.shape.username,
 })
 
 const loginSchema = z.object({
-  userName: userSchema.shape.userName,
+  username: userSchema.shape.username,
   password: userSchema.shape.password,
 })
 
@@ -36,6 +36,6 @@ export {
   blogIdSchema,
   likesUpdateSchema,
   userSchema,
-  userNameSchema,
+  usernameSchema,
   loginSchema,
 }

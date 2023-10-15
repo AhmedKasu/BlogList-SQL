@@ -9,27 +9,27 @@ import { JWT_SECRET } from '../utils/config.js'
 const router = Router()
 
 router.post('/', async (req, res) => {
-  const { userName, password } = validateLogin(req.body)
+  const { username, password } = validateLogin(req.body)
 
   const user = await User.findOne({
     where: {
-      userName: userName,
+      username: username,
     },
   })
 
   const passwordCorrect = await bcrypt.compare(password, user.password)
 
   if (!(user && passwordCorrect))
-    return res.status(401).json({ error: 'invalid userName or password' })
+    return res.status(401).json({ error: 'invalid username or password' })
 
   const userForToken = {
-    userName: user.userName,
+    username: user.username,
     id: user.id,
   }
 
   const token = jwt.sign(userForToken, JWT_SECRET)
 
-  res.status(200).send({ token, userName: user.userName, name: user.name })
+  res.status(200).send({ token, username: user.username, name: user.name })
 })
 
 export default router
