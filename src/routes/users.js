@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import _ from 'lodash'
 
 import { User, Blog } from '../models/index.js'
-import findByUserName from '../middleware/findByUserName.js'
+import findByUsername from '../middleware/findByUsername.js'
 import { userSchema, usernameSchema } from '../utils/validation/schemas.js'
 import validateUserInput from '../utils/validation/index.js'
 
@@ -30,7 +30,7 @@ router.get('/', async (_req, res) => {
   res.status(200).json(users)
 })
 
-router.put('/:username', findByUserName, async (req, res) => {
+router.put('/:username', findByUsername, async (req, res) => {
   req.user.username = validateUserInput(usernameSchema, req.body).username
   await req.user.save()
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))

@@ -1,9 +1,9 @@
 import User from '../models/User.js'
 import { NotFoundError } from '../utils/errors.js'
 
-const findByUserName = async (req, _res, next) => {
+const findByUsername = async (req, _res, next) => {
   req.user = await User.findOne({
-    where: { userName: req.params.userName },
+    where: { username: req.params.username },
   })
 
   if (!req.user) throw new NotFoundError('User not found!')
@@ -11,4 +11,4 @@ const findByUserName = async (req, _res, next) => {
   next()
 }
 
-export default findByUserName
+export default findByUsername
