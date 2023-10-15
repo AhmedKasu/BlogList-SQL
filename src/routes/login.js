@@ -12,14 +12,15 @@ router.post('/', async (req, res) => {
   const { username, password } = validateLogin(req.body)
 
   const user = await User.findOne({
-    where: {
-      username: username,
-    },
+    where: { username },
   })
+
+  if (!user)
+    return res.status(401).json({ error: 'invalid username or password' })
 
   const passwordCorrect = await bcrypt.compare(password, user.password)
 
-  if (!(user && passwordCorrect))
+  if (!passwordCorrect)
     return res.status(401).json({ error: 'invalid username or password' })
 
   const userForToken = {
