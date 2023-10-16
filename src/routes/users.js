@@ -4,6 +4,7 @@ import _ from 'lodash'
 
 import { User, Blog } from '../models/index.js'
 import findByUsername from '../middleware/findByUsername.js'
+import auth from '../middleware/auth.js'
 import { userSchema, usernameSchema } from '../utils/validation/schemas.js'
 import validateUserInput from '../utils/validation/index.js'
 
@@ -22,7 +23,7 @@ router.post('/', async (req, res) => {
   res.status(200).json(_.omit(newUser.toJSON(), ['password']))
 })
 
-router.get('/', async (_req, res) => {
+router.get('/', auth, async (_req, res) => {
   const users = await User.findAll({
     attributes: { exclude: ['password'] },
     include: { model: Blog, attributes: { exclude: ['userId'] } },
@@ -30,7 +31,7 @@ router.get('/', async (_req, res) => {
   res.status(200).json(users)
 })
 
-router.put('/:username', findByUsername, async (req, res) => {
+router.put('/:username', auth, findByUsername, async (req, res) => {
   req.user.username = validateUserInput(usernameSchema, req.body).username
   await req.user.save()
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
