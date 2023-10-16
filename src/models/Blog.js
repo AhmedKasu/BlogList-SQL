@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes, ValidationError } from 'sequelize'
 import { sequelize } from '../db.js'
 
 class Blog extends Model {}
@@ -23,6 +23,18 @@ Blog.init(
     likes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isYearValid(value) {
+          if (value < 1991 || value > new Date().getFullYear()) {
+            throw new ValidationError(
+              'Year written should be between 1991 and the current year.'
+            )
+          }
+        },
+      },
     },
   },
   {

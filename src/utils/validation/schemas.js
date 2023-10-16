@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+const currentYear = new Date().getFullYear()
 const blogSchema = z.object({
   author: z
     .string()
@@ -10,6 +11,12 @@ const blogSchema = z.object({
     .max(50, 'Title should be no more than 50 characters')
     .nonempty('Title cannot be empty'),
   likes: z.number().int('Likes must be an integer').default(0),
+  year: z
+    .number()
+    .int('Year must be an integer')
+    .min(1991, 'Year must be 1991 or later')
+    .max(currentYear, `Year must be ${currentYear} or earlier`)
+    .optional(),
 })
 
 const blogIdSchema = z
