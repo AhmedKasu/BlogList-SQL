@@ -32,6 +32,8 @@ router.get('/', auth, async (_req, res) => {
 })
 
 router.put('/:username', auth, findByUsername, async (req, res) => {
+  if (req.user.id !== req.authUser.id) return res.status(401).end()
+
   req.user.username = validateUserInput(usernameSchema, req.body).username
   await req.user.save()
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
