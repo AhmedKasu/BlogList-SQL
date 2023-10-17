@@ -59,6 +59,17 @@ const loginSchema = z.object({
   password: userSchema.shape.password,
 })
 
+const readinglistSchema = z.object({
+  blogId: z
+    .number()
+    .int('Blog ID must be an integer')
+    .min(1, 'Blog ID must be a positive integer'),
+  userId: z
+    .number()
+    .int('User ID must be an integer')
+    .min(1, 'User ID must be a positive integer'),
+})
+
 export {
   blogSchema,
   idSchema,
@@ -66,4 +77,5 @@ export {
   userSchema,
   usernameSchema,
   loginSchema,
+  readinglistSchema,
 }
