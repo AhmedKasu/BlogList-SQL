@@ -12,6 +12,7 @@ import blogsRouter from './routes/blogs.js'
 import usersRouter from './routes/users.js'
 import loginRouter from './routes/login.js'
 import authorsRouter from './routes/authors.js'
+import readinglistsRouter from './routes/readinglists.js'
 
 app.use(express.json())
 
@@ -22,6 +23,7 @@ app.use(auth)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/authors', authorsRouter)
+app.use('/api/readinglists', readinglistsRouter)
 
 app.use(errorHandler)
 
