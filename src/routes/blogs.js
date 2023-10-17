@@ -8,7 +8,7 @@ import validateUserInput from '../utils/validation/index.js'
 import {
   blogSchema,
   likesUpdateSchema,
-  blogIdSchema,
+  idSchema,
 } from '../utils/validation/schemas.js'
 
 const router = Router()
@@ -63,6 +63,6 @@ singleRouter.put('/', async (req, res) => {
   res.status(200).json(req.blog)
 })
 
-router.use('/:id', findById(Blog, 'blog', blogIdSchema), singleRouter)
+router.use('/:id', findById(Blog, 'blog', idSchema), singleRouter)
 
 export default router

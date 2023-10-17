@@ -19,13 +19,13 @@ const blogSchema = z.object({
     .optional(),
 })
 
-const blogIdSchema = z
+const idSchema = z
   .string()
-  .nonempty('Blog ID cannot be empty')
+  .nonempty('ID cannot be empty')
   .refine((value) => {
     const reg = /^\d+$/
     return reg.test(value)
-  }, 'Blog ID must be a positive integer')
+  }, 'ID must be a positive integer')
 
 const likesUpdateSchema = z.object({
   likes: z
@@ -61,7 +61,7 @@ const loginSchema = z.object({
 
 export {
   blogSchema,
-  blogIdSchema,
+  idSchema,
   likesUpdateSchema,
   userSchema,
   usernameSchema,
