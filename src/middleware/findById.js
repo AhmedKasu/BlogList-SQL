@@ -7,7 +7,7 @@ const findById = (Model, resource, validationSchema) => {
       validateUserInput(validationSchema, req.params.id)
     )
 
-    if (!req[resource]) throw new NotFoundError('Blog not found!')
+    if (!req[resource]) throw new NotFoundError(`${resource} not found!`)
 
     next()
   }
