@@ -2,7 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
 
-import { User, Blog } from '../models/index.js'
+import { User, Blog, Readinglist } from '../models/index.js'
 import findByUsername from '../middleware/findByUsername.js'
 import findById from '../middleware/findById.js'
 import auth from '../middleware/auth.js'
@@ -14,7 +14,7 @@ import {
 import validateUserInput from '../utils/validation/index.js'
 
 const router = Router()
-const singleUser = Router()
+const singleUser = Router({ mergeParams: true })
 
 router.post('/', async (req, res) => {
   const validatedUser = validateUserInput(userSchema, req.body)
@@ -45,28 +45,37 @@ router.put('/:username', auth, findByUsername, async (req, res) => {
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
 })
 
-singleUser.get('/', auth, async (req, res) => {
-  res.status(200).json(req.user)
-})
-
 const singleUserQueryOptions = {
-  attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
-  include: {
-    model: Blog,
-    as: 'readings',
-    attributes: {
-      exclude: ['userId', 'createdAt', 'updatedAt', 'readinglist'],
+  attributes: ['name', 'username'],
+  include: [
+    {
+      model: Blog,
+      as: 'readings',
+      attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
+      through: {
+        model: Readinglist,
+        as: 'readinglists',
+        attributes: ['read', 'id'],
+      },
     },
-    through: {
-      attributes: [],
-    },
-  },
+  ],
 }
 
-router.use(
-  '/:id',
+singleUser.get(
+  '/',
+  auth,
   findById(User, 'user', idSchema, singleUserQueryOptions),
-  singleUser
+  (req, res) => {
+    const readinglistUser = {
+      ...req.user.toJSON(),
+      readings: req.user.readings.map((reading) => {
+        return { ...reading.toJSON(), readinglists: [reading.readinglists] }
+      }),
+    }
+    res.status(200).json(readinglistUser)
+  }
 )
+
+router.use('/:id', singleUser)
 
 export default router
