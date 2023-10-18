@@ -70,6 +70,10 @@ const readinglistSchema = z.object({
     .min(1, 'User ID must be a positive integer'),
 })
 
+const readinglistUpdateSchema = z.object({
+  read: z.boolean().default(true),
+})
+
 export {
   blogSchema,
   idSchema,
@@ -78,4 +82,5 @@ export {
   usernameSchema,
   loginSchema,
   readinglistSchema,
+  readinglistUpdateSchema,
 }
