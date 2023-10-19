@@ -63,6 +63,6 @@ singleRouter.put('/', async (req, res) => {
   res.status(200).json(req.blog)
 })
 
-router.use('/:id', findById(Blog, 'blog', idSchema), singleRouter)
+router.use('/:id', findById(Blog, 'blog', idSchema)(), singleRouter)
 
 export default router

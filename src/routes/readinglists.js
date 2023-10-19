@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
 
 router.put(
   '/:id',
-  findById(Readinglist, 'readinglist', idSchema),
+  findById(Readinglist, 'readinglist', idSchema)(),
   async (req, res) => {
     req.readinglist.read = validateUserInput(
       readinglistUpdateSchema,
