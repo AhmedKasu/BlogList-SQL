@@ -2,7 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { User } from '../models/index.js'
+import { User, Session } from '../models/index.js'
 import validateUserInput from '../utils/validation/index.js'
 import { loginSchema } from '../utils/validation/schemas.js'
 import { JWT_SECRET } from '../utils/config.js'
@@ -24,6 +24,8 @@ router.post('/', async (req, res) => {
   if (!passwordCorrect)
     return res.status(401).json({ error: 'invalid username or password' })
 
+  if (user.disabled) return res.status(403).json({ error: 'user disabled' })
+
   const userForToken = {
     username: user.username,
     id: user.id,
@@ -31,7 +33,13 @@ router.post('/', async (req, res) => {
 
   const token = jwt.sign(userForToken, JWT_SECRET)
 
-  res.status(200).send({ token, username: user.username, name: user.name })
+  await Session.create({ token, user_id: user.id })
+
+  const sessions = await Session.findAll()
+
+  res
+    .status(200)
+    .send({ token, username: user.username, name: user.name, sessions })
 })
 
 export default router
