@@ -31,6 +31,8 @@ router.put(
   '/:id',
   findById(Readinglist, 'readinglist', idSchema)(),
   async (req, res) => {
+    if (req.readinglist.userId !== req.authUser.id) return res.status(401).end()
+
     req.readinglist.read = validateUserInput(
       readinglistUpdateSchema,
       req.body
