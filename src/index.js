@@ -13,11 +13,13 @@ import usersRouter from './routes/users.js'
 import loginRouter from './routes/login.js'
 import authorsRouter from './routes/authors.js'
 import readinglistsRouter from './routes/readinglists.js'
+import logoutRouter from './routes/logout.js'
 
 app.use(express.json())
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/logout', logoutRouter)
 
 app.use(auth)
 
