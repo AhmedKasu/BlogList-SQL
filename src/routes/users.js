@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
+import { Op } from 'sequelize'
 
 import { User, Blog, Readinglist } from '../models/index.js'
 import findByUsername from '../middleware/findByUsername.js'
@@ -45,26 +46,37 @@ router.put('/:username', auth, findByUsername, async (req, res) => {
   res.status(200).send(_.omit(req.user.toJSON(), ['password']))
 })
 
-const singleUserQueryOptions = {
-  attributes: ['name', 'username'],
-  include: [
-    {
-      model: Blog,
-      as: 'readings',
-      attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
-      through: {
-        model: Readinglist,
-        as: 'readinglists',
-        attributes: ['read', 'id'],
+const singleUserQueryOptions = (readQuery) => {
+  const baseOptions = {
+    attributes: ['name', 'username'],
+    include: [
+      {
+        model: Blog,
+        as: 'readings',
+        attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
+        through: {
+          model: Readinglist,
+          as: 'readinglists',
+          attributes: ['read', 'id'],
+        },
       },
-    },
-  ],
+    ],
+  }
+
+  if (readQuery) {
+    baseOptions.include[0].through.where = {
+      read: {
+        [Op.eq]: readQuery === 'true',
+      },
+    }
+  }
+
+  return baseOptions
 }
 
 singleUser.get(
   '/',
-  auth,
-  findById(User, 'user', idSchema, singleUserQueryOptions),
+  findById(User, 'user', idSchema)(singleUserQueryOptions),
   (req, res) => {
     const readinglistUser = {
       ...req.user.toJSON(),
